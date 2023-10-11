@@ -1,1 +1,196 @@
-hi
+// Users collection
+db.users.insertMany([
+  {
+    "name": "John Doe",
+    "email": "john@example.com",
+    "role": "Student"
+  },
+  {
+    "name": "Jane Smith",
+    "email": "jane@example.com",
+    "role": "Student"
+  },
+  {
+    "name": "Mentor1",
+    "email": "mentor1@example.com",
+    "role": "Mentor"
+  },
+  {
+    "name": "Mentor2",
+    "email": "mentor2@example.com",
+    "role": "Mentor"
+  }
+]);
+
+// Codekata collection
+db.codekata.insertMany([
+  {
+    "user_id": ObjectId("user_id_of_john_doe"),
+    "date_completed": ISODate("2023-10-05T00:00:00Z"),
+    "problems_solved": 10
+  },
+  {
+    "user_id": ObjectId("user_id_of_jane_smith"),
+    "date_completed": ISODate("2023-10-10T00:00:00Z"),
+    "problems_solved": 15
+  }
+]);
+
+// Attendance collection
+db.attendance.insertMany([
+  {
+    "user_id": ObjectId("user_id_of_john_doe"),
+    "class_date": ISODate("2023-10-01T00:00:00Z"),
+    "attended": true
+  },
+  {
+    "user_id": ObjectId("user_id_of_jane_smith"),
+    "class_date": ISODate("2023-10-01T00:00:00Z"),
+    "attended": true
+  },
+  {
+    "user_id": ObjectId("user_id_of_john_doe"),
+    "class_date": ISODate("2023-10-15T00:00:00Z"),
+    "attended": false
+  },
+  {
+    "user_id": ObjectId("user_id_of_jane_smith"),
+    "class_date": ISODate("2023-10-15T00:00:00Z"),
+    "attended": true
+  }
+]);
+
+// Topics collection
+db.topics.insertMany([
+  { "topic_name": "Database Design" },
+  { "topic_name": "SQL Queries" },
+  { "topic_name": "Python Programming" }
+]);
+
+// Tasks collection
+db.tasks.insertMany([
+  {
+    "user_id": ObjectId("user_id_of_john_doe"),
+    "task_name": "Homework 1",
+    "task_date": ISODate("2023-10-05T00:00:00Z"),
+    "submitted": true
+  },
+  {
+    "user_id": ObjectId("user_id_of_jane_smith"),
+    "task_name": "Homework 2",
+    "task_date": ISODate("2023-10-10T00:00:00Z"),
+    "submitted": true
+  }
+]);
+
+// Company Drives collection
+db.company_drives.insertMany([
+  {
+    "drive_name": "Tech Company A",
+    "drive_date": ISODate("2020-10-20T00:00:00Z")
+  },
+  {
+    "drive_name": "Tech Company B",
+    "drive_date": ISODate("2020-10-25T00:00:00Z")
+  }
+]);
+
+// Mentors collection
+db.mentors.insertMany([
+  { "mentor_name": "Mentor1" },
+  { "mentor_name": "Mentor2" }
+]);
+
+// Mentoring Relationships collection
+db.mentoring_relationships.insertMany([
+  {
+    "mentee_id": ObjectId("user_id_of_john_doe"),
+    "mentor_id": ObjectId("mentor_id_of_mentor1")
+  },
+  {
+    "mentee_id": ObjectId("user_id_of_jane_smith"),
+    "mentor_id": ObjectId("mentor_id_of_mentor2")
+  }
+]);
+
+// Queries
+
+// 1. Find all the topics and tasks taught in the month of October
+db.topics.find();
+db.tasks.find({ "task_date": { $gte: ISODate("2023-10-01T00:00:00Z"), $lte: ISODate("2023-10-31T23:59:59Z") } });
+
+// 2. Find all the company drives that appeared between 15 Oct 2020 and 31 Oct 2020
+db.company_drives.find({ "drive_date": { $gte: ISODate("2020-10-15T00:00:00Z"), $lte: ISODate("2020-10-31T23:59:59Z") } });
+
+// 3. Find all the company drives and students who appeared for the placement.
+db.company_drives.aggregate([
+  {
+    $lookup: {
+      from: "users",
+      localField: "_id",
+      foreignField: "role",
+      as: "students"
+    }
+  }
+]);
+
+// 4. Find the number of problems solved by each user in Codekata
+db.codekata.aggregate([
+  {
+    $lookup: {
+      from: "users",
+      localField: "user_id",
+      foreignField: "_id",
+      as: "user"
+    }
+  },
+  {
+    $project: {
+      "user.name": 1,
+      "problems_solved": 1,
+      _id: 0
+    }
+  }
+]);
+
+// 5. Find all the mentors with more than 15 mentors
+db.mentoring_relationships.aggregate([
+  {
+    $group: {
+      _id: "$mentor_id",
+      menteeCount: { $sum: 1 }
+    }
+  },
+  {
+    $match: { menteeCount: { $gt: 15 } }
+  }
+]);
+
+// 6. Find the number of users who were absent and did not submit tasks between 15 Oct 2020 and 31 Oct 2020
+db.attendance.aggregate([
+  {
+    $match: {
+      "class_date": { $gte: ISODate("2020-10-15T00:00:00Z"), $lte: ISODate("2020-10-31T23:59:59Z") },
+      "attended": false
+    }
+  },
+  {
+    $lookup: {
+      from: "tasks",
+      localField: "user_id",
+      foreignField: "user_id",
+      as: "tasks"
+    }
+  },
+  {
+    $match: {
+      "tasks.submitted": false
+    }
+  },
+  {
+    $group: {
+      _id: "$user_id",
+      absenceCount: { $sum: 1 }
+    }
+  }
+]);
