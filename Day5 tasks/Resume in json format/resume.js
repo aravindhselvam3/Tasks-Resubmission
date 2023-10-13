@@ -5,7 +5,7 @@ const resume = {
     "phone": "123-456-7890",
     "address": "123 street, karaikudi, india"
   },
-  "summary": "I am an experienced software developer with a passion for creating efficient and user-friendly applications.",
+  "summary": "I am a software developer with a passion for creating efficient and user-friendly applications.",
   "education": [
     {
       "degree": "Bachelor of Engineering in ECE",
