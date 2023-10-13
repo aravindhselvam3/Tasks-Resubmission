@@ -1,0 +1,13 @@
+
+.gray-white {
+  background: darkslategrey;
+  color: white;
+}
+.container{
+  background-color:rgb(183, 194, 183);
+  height: 100vh;
+}
+
+.card-body{
+  background-color:rgb(66, 64, 64);
+}
