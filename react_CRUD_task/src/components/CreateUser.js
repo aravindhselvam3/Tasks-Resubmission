@@ -14,7 +14,7 @@ function CreateUser() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:3001/users/', newUser);
+      await axios.post('https://react-backend-54zc.onrender.com/users/', newUser);
   
       setNewUser({ name: '', email: '' });
       nameInputRef.current.focus();

@@ -17,7 +17,7 @@ function App({id}) {
   }
 
   useEffect(() => {
-    axios.get('http://localhost:3001/users/').then((response) => {
+    axios.get('https://react-backend-54zc.onrender.com/users/').then((response) => {
       setUsers(response.data);
     });
   }, []);
@@ -28,7 +28,7 @@ function App({id}) {
     event.preventDefault();
 
     try {
-      await axios.post('http://localhost:3001/users/', newUser);
+      await axios.post('https://react-backend-54zc.onrender.com/users/', newUser);
       setNewUser({ name: '', email: '' });
       newUserNameRef.current.focus();
     } catch (error) {

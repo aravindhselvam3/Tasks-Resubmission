@@ -5,7 +5,7 @@ function ListUsers() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/users/').then((response) => {
+    axios.get('https://react-backend-54zc.onrender.com/users/').then((response) => {
       setUsers(response.data);
     });
   }, []);

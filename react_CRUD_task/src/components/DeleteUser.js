@@ -9,7 +9,7 @@ function DeleteUser() {
 
   useEffect(() => {
 
-    axios.get('http://localhost:3001/users').then((response) => {
+    axios.get('https://react-backend-54zc.onrender.com/users').then((response) => {
       const ids = response.data.map((user) => user.id);
       setUserIds(ids);
     });
@@ -23,7 +23,7 @@ function DeleteUser() {
   const handleDelete = async () => {
     try {
       
-      await axios.delete(`http://localhost:3001/users/${selectedId}`);
+      await axios.delete(`https://react-backend-54zc.onrender.com/users/${selectedId}`);
       
       window.location.href = '/users';
     } catch (error) {

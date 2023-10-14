@@ -10,13 +10,13 @@ function EditUser() {
 
   useEffect(() => {
     
-    axios.get('http://localhost:3001/users').then((response) => {
+    axios.get('https://react-backend-54zc.onrender.com/users').then((response) => {
       const ids = response.data.map((userData) => userData.id);
       setUserIds(ids);
     });
 
    
-    axios.get(`http://localhost:3001/users/${selectedId}`).then((response) => {
+    axios.get(`https://react-backend-54zc.onrender.com/users/${selectedId}`).then((response) => {
       setUser(response.data);
     });
 
@@ -35,7 +35,7 @@ function EditUser() {
     e.preventDefault();
     try {
      
-      await axios.put(`http://localhost:3001/users/${selectedId}`, user);
+      await axios.put(`https://react-backend-54zc.onrender.com/users/${selectedId}`, user);
    
       setUser({ name: '', email: '' });
       window.location.href = `/profile/${selectedId}`;
