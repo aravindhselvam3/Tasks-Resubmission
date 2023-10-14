@@ -1,0 +1,16 @@
+
+#cardContainer{
+    display: flex;
+    flex-wrap: wrap;
+    gap:20px;
+    width: 100%;
+    margin-left: 9%;
+    
+}
+body{
+    background-color:cadetblue;
+}
+.card{
+    max-width: 350px !important;
+    background-color:bisque;
+}
