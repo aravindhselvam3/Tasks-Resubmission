@@ -1,4 +1,6 @@
-
+body{
+  background-color:rgb(183, 194, 183);
+}
 .gray-white {
   background: darkslategrey;
   color: white;
@@ -6,8 +8,23 @@
 .container{
   background-color:rgb(183, 194, 183);
   height: 100vh;
+  
 }
 
 .card-body{
   background-color:rgb(66, 64, 64);
+ border-radius: 15px;
+ height: 159px;
+  
+  
+}
+.inner-card{
+  border-radius: 15px;
+  height: 10em;
+  width:13em;
+}
+
+.card{
+  background-color:rgb(183, 194, 183) !important;
+  border:none !important;
 }
